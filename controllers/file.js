@@ -3,18 +3,24 @@ const path = require('path');
 
 const sendEmail = require('../utils/mail');
 
-exports.getFiles = (req, res, next) => {
-    fs.readdir(path.join(__dirname, '../public/uploads'), function (err, files) {
-        //handling error
-        if (err) {
-            return console.log('Unable to scan directory: ' + err);
-        } 
-        res.status(200).json({message:'Fetched all the files', files: files});
-    });
-}
+const File = require('../models/file');
 
-exports.postUpload = (req, res, next) => {
-    const fileName = req.file.originalname;
+exports.getFiles = async (req, res, next) => {
+    const files = await File.find();
+    const numberOfFIles = await File.find().countDocuments();
+    res.status(200).json({message: `Fetched all ${numberOfFIles} files`, files: files});
+};
+
+exports.postUpload = async (req, res, next) => {
+    const fileName = req.file.filename;
+    const fileSize = req.file.size;
+    const filePath = req.file.path;
+    const newFile = new File({
+        fileName: fileName,
+        fileSize: fileSize,
+        filePath: filePath
+    })
+    const resulr = await newFile.save();
     sendEmail(fileName);
-    res.status(200).json({message:'Upload successful. Notified via Email'});
+    res.status(200).json({message:'Upload successful & Notified via Email'});
 }

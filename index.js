@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
 
 const fileController = require('./routes/file');
 
@@ -11,7 +13,7 @@ const fileStorage = multer.diskStorage({
         cb(null, 'public/uploads');
     },
     filename: (req, file, cb) => {
-        cb(null, 'dec' + '-' + file.originalname);
+        cb(null,file.originalname);
     }
 });
 
@@ -23,6 +25,14 @@ app.use(multer({storage : fileStorage}).single('excel'));
 
 app.use(fileController);
 
-app.listen(80, function () {
-    console.log('✨ App listening on port', this.address().port);
-});
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(result => {
+    console.log("🎉 Database connected.");
+    app.listen(80, function () {
+        console.log('✨ App listening on port', this.address().port);
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  });
