@@ -15,7 +15,10 @@ const fileStorage = multer.diskStorage({
     }
 });
 
+// Bodyparser middleware to parse incoming requests from encoded values
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Multer middleware to handle single file upload with ID 'excel' only.
 app.use(multer({storage : fileStorage}).single('excel'));
 
 app.use(fileController);

@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const sendEmail = require('../utils/mail');
+
 exports.getFiles = (req, res, next) => {
     fs.readdir(path.join(__dirname, '../public/uploads'), function (err, files) {
         //handling error
@@ -12,5 +14,7 @@ exports.getFiles = (req, res, next) => {
 }
 
 exports.postUpload = (req, res, next) => {
+    const fileName = req.file.originalname;
+    sendEmail(fileName);
     res.status(200).json({message:'Upload successful. Notified via Email'});
 }
