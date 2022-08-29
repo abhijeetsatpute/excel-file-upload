@@ -6,8 +6,8 @@ info:
 servers:
   - url: http://localhost
     description: Local version of the application
-  - url: http://staging-api.example.com
-    description: Production server
+  - url: https://excelfileup1oad.herokuapp.com
+    description: Production server hosted on heroku
 paths:
   /files:
     get:
