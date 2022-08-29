@@ -1,0 +1,46 @@
+openapi: 3.0.0
+info:
+  title: File upload
+  description: A simple Excel file upload REST API to store and fetch files.
+  version: 1.0.0
+servers:
+  - url: http://localhost
+    description: Local version of the application
+  - url: http://staging-api.example.com
+    description: Production server
+paths:
+  /files:
+    get:
+      summary: Returns a list of files uploaded.
+      description: GET list of all the files with its details such as file name, file path, file size.
+      responses:
+        '200':    # status code
+          description: A JSON array of files object
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object
+  /upload:
+    post:
+      summary: Returns a list of files uploaded.
+      description: GET list of all the files with its details such as file name, file path, file size.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                excel:
+                  type: string
+                  format: binary
+      responses:
+        '200':    # status code
+          description: A JSON array of files object
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: object

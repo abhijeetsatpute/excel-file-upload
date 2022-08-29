@@ -22,7 +22,12 @@ exports.postUpload = async (req, res, next) => {
         fileSize: fileSize,
         filePath: `${req.protocol}://${req.get('host')}/uploads/${fileName}`
     })
-    const resulr = await newFile.save();
-    sendEmail(fileName);
-    res.status(200).json({message:'Upload successful & Notified via Email'});
+    try {
+        const resulr = await newFile.save();
+        sendEmail(fileName);
+        res.status(200).json({message:'Upload successful & Notified via Email'});
+    } catch (error) {
+        
+    }
+    
 }

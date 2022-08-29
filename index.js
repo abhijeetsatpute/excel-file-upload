@@ -4,6 +4,8 @@ const multer = require('multer');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
 
 const fileController = require('./routes/file');
 
@@ -17,6 +19,10 @@ const fileStorage = multer.diskStorage({
         cb(null,file.originalname);
     }
 });
+
+const swaggerDocument = YAML.load('./swagger.yaml');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Serving static files that are uploaded
 app.use(express.static(path.join(__dirname, 'public')));
