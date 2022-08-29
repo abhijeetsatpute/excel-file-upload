@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
+const path = require('path');
 
 const fileController = require('./routes/file');
 
@@ -16,6 +17,9 @@ const fileStorage = multer.diskStorage({
         cb(null,file.originalname);
     }
 });
+
+// Serving static files that are uploaded
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Bodyparser middleware to parse incoming requests from encoded values
 app.use(bodyParser.urlencoded({ extended: true }));
