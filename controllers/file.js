@@ -7,9 +7,13 @@ const File = require('../models/file');
 
 // Fetch all files
 exports.getFiles = async (req, res, next) => {
-    const files = await File.find();
-    const numberOfFIles = await File.find().countDocuments();
-    res.status(200).json({message: `Fetched all ${numberOfFIles} files`, files: files});
+    try {
+        const files = await File.find();
+        const numberOfFIles = await File.find().countDocuments();
+        res.status(200).json({message: `Fetched all ${numberOfFIles} files`, files: files});
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 // Insert files deatils into mongoDB as a document
@@ -27,7 +31,6 @@ exports.postUpload = async (req, res, next) => {
         sendEmail(fileName);
         res.status(200).json({message:'Upload successful & Notified via Email'});
     } catch (error) {
-        
+        console.log(error);
     }
-    
 }
